@@ -1,0 +1,32 @@
+{
+    "name": "home-control",
+    "version": "1.0.0",
+    "description": "",
+    "main": "start.js",
+    "scripts": {
+        "test": "jest --watch --runInBand --detectOpenHandles",
+        "start": "node start.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ErikLysne/home-control.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ErikLysne/home-control/issues"
+    },
+    "homepage": "https://github.com/ErikLysne/home-control#readme",
+    "devDependencies": {
+        "babel-jest": "^26.0.1",
+        "faker": "^4.1.0"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "config": "^3.3.1",
+        "esm": "^3.2.25",
+        "express": "^4.17.1",
+        "mongoose": "^5.9.20",
+        "morgan": "^1.10.0"
+    }
+}

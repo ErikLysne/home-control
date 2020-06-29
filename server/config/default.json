@@ -1,0 +1,12 @@
+{
+    "api": {
+        "host": "localhost",
+        "port": 3000
+    },
+    "db": {
+        "scheme": "mongodb",
+        "host": "localhost",
+        "port": 27017,
+        "collection": "home-control"
+    }
+}
