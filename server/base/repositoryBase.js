@@ -4,63 +4,60 @@ export default class RepositoryBase {
     }
 
     async findAll() {
-        return new Promise(async (resolve, reject) => {
-            await this.Model.find({}, (err, result) => {
-                if (err) {
-                    reject(error);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
+        return await performRepositoryAction(
+            this.Model.find.bind(this.Model),
+            {}
+        );
     }
 
     async deleteAll() {
-        return new Promise(async (resolve, reject) => {
-            await this.Model.deleteMany({}, (err) => {
-                if (err) {
-                    reject(error);
-                } else {
-                    resolve(true);
-                }
-            });
+        return await performRepositoryAction(
+            this.Model.deleteMany.bind(this.Model),
+            {}
+        );
+    }
+
+    async find(criteria, value) {
+        return await performRepositoryAction(this.Model.find.bind(this.Model), {
+            [criteria]: value
         });
     }
 
-    async createOne(params) {
-        return new Promise(async (resolve, reject) => {
-            const newItem = new this.Model({ ...params });
-            newItem.save((err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(true);
-                }
-            });
-        });
+    async create(params) {
+        return await performRepositoryAction(
+            this.Model.create.bind(this.Model),
+            params
+        );
     }
 
-    async deleteByProp(prop, value) {
-        return new Promise(async (resolve, reject) => {
-            await this.Model.deleteOne({ [prop]: value }, (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(true);
-                }
-            });
-        });
+    async update(criteria, value, params) {
+        const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+        return await performRepositoryAction(
+            this.Model.updateOne.bind(this.Model),
+            { [criteria]: value },
+            {
+                ...params,
+                updated: new Date(Date.now() - timezoneOffset).toISOString()
+            }
+        );
     }
 
-    async findByProp(prop, value) {
-        return new Promise(async (resolve, reject) => {
-            await this.Model.find({ [prop]: value }, (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
+    async delete(criteria, value) {
+        return await performRepositoryAction(
+            this.Model.deleteOne.bind(this.Model),
+            { [criteria]: value }
+        );
     }
+}
+
+async function performRepositoryAction(action, ...args) {
+    return new Promise(async (resolve, reject) => {
+        await action(...args)
+            .then((result) => {
+                resolve(result || true);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
 }

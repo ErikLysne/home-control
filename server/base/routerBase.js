@@ -1,6 +1,6 @@
 export default class RouterBase {
-    constructor(Controller, Repository, Model) {
-        this.controller = new Controller(Repository, Model);
+    constructor(controller) {
+        this.controller = controller;
         this.registeredRoutes = [];
     }
 

@@ -23,10 +23,12 @@
     },
     "dependencies": {
         "body-parser": "^1.19.0",
+        "chalk": "^4.1.0",
         "config": "^3.3.1",
         "esm": "^3.2.25",
         "express": "^4.17.1",
         "mongoose": "^5.9.20",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "node-hue-api": "^4.0.7"
     }
 }

@@ -3,16 +3,21 @@ import mongoose from "mongoose";
 const roomsSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     updated: {
         type: Date,
-        default: Date.now,
+        default: () => {
+            const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+            return new Date(Date.now() - timezoneOffset).toISOString();
+        }
     },
-    lights: mongoose.Schema.Types.Mixed,
-    sensors: mongoose.Schema.Types.Mixed,
+    lights: {
+        provider: String,
+        group: String,
+        resource: mongoose.Schema.Types.Mixed
+    },
+    sensors: mongoose.Schema.Types.Mixed
 });
 
-const Room = mongoose.model("Room", roomsSchema);
-
-export default Room;
+export default mongoose.model("Room", roomsSchema);

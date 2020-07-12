@@ -9,6 +9,9 @@ export default class RoomRouter extends RouterBase {
         registerRoute("/rooms", "post", makeCallback("postRoom"));
         registerRoute("/rooms", "delete", makeCallback("deleteRooms"));
         registerRoute("/rooms/:roomName", "get", makeCallback("getRoom"));
+        registerRoute("/rooms/:roomName", "put", makeCallback("updateRoom"));
         registerRoute("/rooms/:roomName", "delete", makeCallback("deleteRoom"));
+        registerRoute("/rooms/:roomName/lights", "get", makeCallback("getLights"));
+        registerRoute("/rooms/:roomName/lights", "put", makeCallback("updateLights"));
     }
 }

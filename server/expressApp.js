@@ -1,4 +1,5 @@
 import config from "config";
+import chalk from "chalk";
 import express from "express";
 import bodyParser from "body-parser";
 const morgan = require("morgan");
@@ -36,7 +37,7 @@ export default class ExpressApp {
         // Default fallback
         this.express.use((req, res) => {
             res.status(404).send({
-                error: `Method ${req.method} not defined for route ${req.originalUrl}`,
+                error: `Method ${req.method} not defined for route ${req.originalUrl}`
             });
         });
 
