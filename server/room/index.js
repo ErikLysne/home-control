@@ -2,9 +2,10 @@ import RoomRouter from "./roomRouter";
 import RoomController from "./roomController";
 import RoomRepository from "./roomRepository";
 import RoomModel from "./roomModel";
+import RoomRequestValidator from "./roomRequestValidator";
 
-import PhilipsHueLightsService from "./lights/philipsHueLightsService";
-import PhilipsHueGroupModel from "./lights/philipsHueGroupModel";
+import PhilipsHueLightsService from "./lights/providers/philips-hue/philipsHueLightsService";
+import PhilipsHueGroupModel from "./lights/providers/philips-hue/philipsHueGroupModel";
 
 const services = [
     new PhilipsHueLightsService(
@@ -14,7 +15,12 @@ const services = [
     )
 ];
 
-const roomController = new RoomController(services, RoomRepository, RoomModel);
+const roomController = new RoomController(
+    services,
+    RoomRepository,
+    RoomModel,
+    RoomRequestValidator
+);
 roomController.startServices();
 
 const roomRouter = new RoomRouter(roomController);

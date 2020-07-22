@@ -1,7 +1,7 @@
-import RepositoryBase from "../base/repositoryBase";
+import Repository from "../base/repository";
 import RoomModel from "./roomModel";
 
-export default class RoomRepository extends RepositoryBase {
+export default class RoomRepository extends Repository {
     constructor() {
         super(RoomModel);
     }

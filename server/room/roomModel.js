@@ -5,6 +5,9 @@ const roomsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    displayName: {
+        type: String
+    },
     updated: {
         type: Date,
         default: () => {
@@ -13,8 +16,10 @@ const roomsSchema = new mongoose.Schema({
         }
     },
     lights: {
-        provider: String,
-        group: String,
+        meta: {
+            provider: String,
+            group: String
+        },
         resource: mongoose.Schema.Types.Mixed
     },
     sensors: mongoose.Schema.Types.Mixed

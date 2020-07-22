@@ -2,6 +2,7 @@ import config from "config";
 import chalk from "chalk";
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 const morgan = require("morgan");
 
 export default class ExpressApp {
@@ -13,7 +14,12 @@ export default class ExpressApp {
 
         // Build middleware stack
         this.express.use(bodyParser.json());
-        this.express.use(morgan("combined"));
+        this.express.use(cors());
+        this.express.use(
+            morgan(
+                `:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version :req[content-type]" :status :res[content-length] ":referrer" ":user-agent`
+            )
+        );
     }
 
     registerRouter(router) {

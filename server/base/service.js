@@ -1,4 +1,4 @@
-export default class ServiceBase {
+export default class Service {
     constructor() {
         this.started = false;
     }
@@ -14,4 +14,6 @@ export default class ServiceBase {
             );
         }
     }
+
+    synchronize() {}
 }

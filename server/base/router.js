@@ -1,4 +1,4 @@
-export default class RouterBase {
+export default class Router {
     constructor(controller) {
         this.controller = controller;
         this.registeredRoutes = [];

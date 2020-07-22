@@ -1,4 +1,4 @@
-export default class RepositoryBase {
+export default class Repository {
     constructor(Model) {
         this.Model = Model;
     }
@@ -31,14 +31,10 @@ export default class RepositoryBase {
     }
 
     async update(criteria, value, params) {
-        const timezoneOffset = new Date().getTimezoneOffset() * 60000;
         return await performRepositoryAction(
             this.Model.updateOne.bind(this.Model),
             { [criteria]: value },
-            {
-                ...params,
-                updated: new Date(Date.now() - timezoneOffset).toISOString()
-            }
+            params
         );
     }
 
@@ -57,6 +53,7 @@ async function performRepositoryAction(action, ...args) {
                 resolve(result || true);
             })
             .catch((err) => {
+                console.error(err);
                 reject(err);
             });
     });

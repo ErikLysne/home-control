@@ -1,6 +1,6 @@
-import ServiceBase from "../../base/serviceBase";
+import Service from "../../base/service";
 
-export default class LightsService extends ServiceBase {
+export default class LightsService extends Service {
     constructor(Model) {
         super();
         this.Model = Model;

@@ -1,4 +1,4 @@
-import LightsService from "./lightsService";
+import LightsService from "../../lightsService";
 import hueApi from "node-hue-api";
 
 export default class PhilipsHueLightsService extends LightsService {
@@ -25,19 +25,21 @@ export default class PhilipsHueLightsService extends LightsService {
         });
     }
 
-    async getLights(name) {
+    async getLights(group) {
         super.checkIfStarted();
         return new Promise(async (resolve, reject) => {
             await this.user.groups
-                .getGroupByName(name)
+                .getGroupByName(group)
                 .then((lights) => {
                     if (lights.length > 0) {
-                        return resolve(
-                            new this.Model(lights[0].getHuePayload())
+                        const lightsModel = new this.Model(
+                            lights[0].getHuePayload()
                         );
+                        const { _id, ...lightParams } = lightsModel.toObject();
+                        return resolve(lightParams);
                     } else {
                         throw new Error(
-                            `Light group \`${name}\` was not found`
+                            `Light group \`${group}\` was not found`
                         );
                     }
                 })
@@ -45,7 +47,7 @@ export default class PhilipsHueLightsService extends LightsService {
         });
     }
 
-    async updateLights(name, params) {
+    async updateLights(group, params) {
         super.checkIfStarted();
         const state = new this.LightState();
         params.on !== undefined && state.on(params.on);
@@ -57,13 +59,27 @@ export default class PhilipsHueLightsService extends LightsService {
         params.alert !== undefined && state.alert(params.alert);
 
         return new Promise(async (resolve, reject) => {
-            await this.getLights(name)
+            await this.getLights(group)
                 .then(async (lights) => {
                     const { id } = lights;
                     return await this.user.groups.setGroupState(id, state);
                 })
-                .then((result) => resolve(result))
+                .then((result) => {
+                    resolve(result);
+                })
                 .catch((err) => reject(err));
         });
+    }
+
+    async synchronize(room) {
+        const group =
+            room.lights !== "undefined" &&
+            room.lights.meta !== "undefined" &&
+            room.lights.meta.group;
+        if (typeof group !== "undefined") {
+            const lights = await this.getLights(room.lights.meta.group);
+            const { _id, ...lightParams } = lights;
+            room.lights.resource = lightParams;
+        }
     }
 }
