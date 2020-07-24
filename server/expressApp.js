@@ -17,7 +17,7 @@ export default class ExpressApp {
         this.express.use(cors());
         this.express.use(
             morgan(
-                `:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version :req[content-type]" :status :res[content-length] ":referrer" ":user-agent`
+                `:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version :req[content-type]" :status ":referrer"`
             )
         );
     }

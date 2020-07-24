@@ -1,10 +1,6 @@
 import * as types from "./types";
 
 const initialState = {
-    remote: {
-        pending: false,
-        error: ""
-    },
     meta: {
         provider: "",
         group: ""
@@ -32,21 +28,9 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
     switch (type) {
-        case types.REQUEST_SENT:
+        case types.LIGHTS_UPDATED:
             return {
                 ...state,
-                remote: {
-                    pending: true,
-                    error: ""
-                }
-            };
-        case types.REQUEST_SUCCEEDED:
-            return {
-                ...state,
-                remote: {
-                    pending: false,
-                    error: ""
-                },
                 meta: {
                     provider: payload.meta.provider,
                     group: payload.meta.group
@@ -69,14 +53,6 @@ export default (state = initialState, { type, payload }) => {
                         allOn: payload.resource.state.all_on,
                         anyOn: payload.resource.state.any_on
                     }
-                }
-            };
-        case types.REQUEST_FAILED:
-            return {
-                ...state,
-                remote: {
-                    pending: false,
-                    error: payload.error
                 }
             };
         default:

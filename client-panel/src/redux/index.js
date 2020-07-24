@@ -1,10 +1,14 @@
 import { combineReducers } from "redux";
 import config from "./config";
-import homeScreen from "./homeScreen";
+import remote from "./remote";
+import rooms from "./rooms";
 import lights from "./lights";
+import theme from "./theme";
 
 export default combineReducers({
     config,
-    homeScreen,
-    lights
+    remote,
+    rooms,
+    lights,
+    theme
 });

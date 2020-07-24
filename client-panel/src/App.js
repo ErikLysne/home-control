@@ -6,6 +6,7 @@ import thunk from "redux-thunk";
 import rootReducer from "./redux";
 
 import Background from "./components/Background";
+import InfoBar from "./components/InfoBar";
 import HomeScreen from "./components/HomeScreen";
 
 const store = createStore(
@@ -17,6 +18,7 @@ function App() {
     return (
         <Provider store={store}>
             <Background />
+            <InfoBar />
             <HomeScreen />
         </Provider>
     );

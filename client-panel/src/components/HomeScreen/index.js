@@ -2,44 +2,60 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { homeScreenActions } from "../../redux/homeScreen";
+import { roomsOperations } from "../../redux/rooms";
 import { lightsOperations } from "../../redux/lights";
 
+import RoomDisplay from "./RoomDisplay";
 import ActivationButton from "./ActivationButton";
+import LightCard from "./LightCard";
 
 const Container = styled.div`
-    width: 80%;
+    width: 100%;
     height: 80%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    border: solid red;
-    display: flex;
-    justify-content: center;
+    display: inline-flex;
+    flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+
+    & > * {
+        margin: 20px 0;
+    }
 `;
 
 const ButtonRibbon = styled.div`
     width: 100%;
     height: 200px;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgb(255, 255, 255);
-    opacity: 0.025;
-    z-index: 0;
+    background-color: rgb(9, 24, 36);
+    box-shadow: inset 0 0 10px rgba(199, 219, 231, 0.75);
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const CardContainer = styled.div`
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export default function HomeScreen({}) {
-    const lightsState = useSelector((store) => store.lights);
-    const lightsPending = lightsState.remote.pending;
-    const lightsOn = lightsState.resource.action.on;
+    const remote = useSelector((store) => store.remote);
+    const pending = remote.pending;
+
+    const lights = useSelector((store) => store.lights);
+    const lightsOn = lights.resource.action.on;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(roomsOperations.getRoomsRequested());
         dispatch(lightsOperations.getLightsRequested());
         return () => {
             //cleanup
@@ -47,18 +63,25 @@ export default function HomeScreen({}) {
     }, []);
 
     const handleActivationButtonPressed = () => {
-        if (!lightsPending) {
+        if (!pending) {
             dispatch(lightsOperations.updateLightsRequested({ on: !lightsOn }));
         }
     };
 
     return (
         <Container>
-            <ButtonRibbon />
-            <ActivationButton
-                state={lightsOn}
-                onClick={handleActivationButtonPressed}
-            />
+            <RoomDisplay />
+            <ButtonRibbon>
+                <ActivationButton
+                    state={lightsOn}
+                    onClick={handleActivationButtonPressed}
+                />
+            </ButtonRibbon>
+            <CardContainer>
+                <LightCard />
+                <LightCard />
+                <LightCard />
+            </CardContainer>
         </Container>
     );
 }
