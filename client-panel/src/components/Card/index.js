@@ -9,8 +9,8 @@ const Container = styled.div`
     position: relative;
     overflow: hidden;
     color: rgb(255, 255, 255);
-    background-color: ${(props) => props.theme.boxColor};
-    box-shadow: inset 0 0 10px ${(props) => props.theme.boxColorInnerShadow};
+    background-color: ${(props) => props.theme.boxBackgroundColor};
+    box-shadow: ${(props) => props.theme.boxInnerShadow};
 
     & > * {
         padding: 10px 10px;
@@ -19,6 +19,7 @@ const Container = styled.div`
 
 const Header = styled.div`
     width: 100%;
+    color: ${(props) => props.theme.textColorAlternative1};
     background-color: rgba(255, 255, 255, 0.25);
 `;
 
@@ -43,7 +44,7 @@ export default function Card({ header, items }) {
     const { theme } = useSelector((state) => state.theme);
     return (
         <Container theme={theme}>
-            <Header>
+            <Header theme={theme}>
                 <b>{header.first}</b> {header.second}
             </Header>
             <Table>

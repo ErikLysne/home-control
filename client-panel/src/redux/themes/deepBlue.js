@@ -4,6 +4,8 @@ export default {
     h1Color: "rgb(255, 255, 255)",
     h1ColorGlowStart: "rgb(255, 255, 255, 0.75)",
     h1ColorGlowStop: "rgb(255, 255, 255, 0.25)",
-    boxColor: "rgb(9, 24, 36)",
-    boxColorInnerShadow: "rgba(199, 219, 231, 0.75)"
+    boxBackgroundColor: "rgb(9, 24, 36)",
+    boxInnerShadow: "inset 0 0 10px rgba(199, 219, 231, 0.75)",
+    textColor: "rgb(255, 255, 255)",
+    textColorAlternative1: "rgb(150, 230, 255)"
 };

@@ -8,6 +8,7 @@ import rootReducer from "./redux";
 import Background from "./components/Background";
 import InfoBar from "./components/InfoBar";
 import HomeScreen from "./components/HomeScreen";
+import MainMenu from "./components/MainMenu";
 
 const store = createStore(
     rootReducer,
@@ -20,6 +21,7 @@ function App() {
             <Background />
             <InfoBar />
             <HomeScreen />
+            <MainMenu />
         </Provider>
     );
 }

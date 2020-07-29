@@ -61,7 +61,7 @@ const Icon = styled(ButtonLayer)`
     pointer-events: none;
 `;
 
-export default function ({ state, onClick }) {
+export default function ActivationButton({ state, onClick }) {
     return (
         <>
             <Background state={state} />
