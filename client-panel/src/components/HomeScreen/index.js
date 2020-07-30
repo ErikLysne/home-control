@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-
 import { roomsOperations } from "../../redux/rooms";
 import { lightsOperations } from "../../redux/lights";
-
 import RoomDisplay from "./RoomDisplay";
 import ActivationButton from "./ActivationButton";
 import LightCard from "./LightCard";

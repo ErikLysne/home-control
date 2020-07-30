@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 import rootReducer from "./redux";
 
 import Background from "./components/Background";
-import InfoBar from "./components/InfoBar";
+import TopBar from "./components/TopBar";
 import HomeScreen from "./components/HomeScreen";
 import MainMenu from "./components/MainMenu";
 
@@ -19,7 +19,7 @@ function App() {
     return (
         <Provider store={store}>
             <Background />
-            <InfoBar />
+            <TopBar />
             <HomeScreen />
             <MainMenu />
         </Provider>

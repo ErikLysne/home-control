@@ -6,6 +6,7 @@ const initialState = {
             "Content-Type": "application/json"
         }
     },
+    loadingTime: 500,
     target: "living-room"
 };
 

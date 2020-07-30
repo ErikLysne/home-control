@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-
 import BackgroundOn from "./images/On/Background.png";
 import ButtonOn from "./images/On/Button.png";
 import IconOn from "./images/On/Icon.png";

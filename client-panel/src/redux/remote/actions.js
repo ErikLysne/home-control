@@ -5,13 +5,18 @@ export const requestSent = () => ({
     payload: {}
 });
 
+export const requestLoading = () => ({
+    type: types.REQUEST_LOADING,
+    payload: {}
+});
+
 export const requestSucceeded = () => ({
     type: types.REQUEST_SUCCEEDED,
     payload: {}
 });
 
 export const requestFailed = (err) => ({
-    type: types.REQUEST_SUCCEEDED,
+    type: types.REQUEST_FAILED,
     payload: {
         error: err
     }
