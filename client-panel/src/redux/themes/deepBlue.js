@@ -9,5 +9,10 @@ export default {
     boxInnerShadow: "inset 0 0 10px rgba(199, 219, 231, 0.75)",
     buttonActiveBackgroundColor: "rgba(199, 219, 231, 0.15)",
     textColor: "rgb(255, 255, 255)",
-    textColorAlternative1: "rgb(150, 230, 255)"
+    textColorAlternative1: "rgb(150, 230, 255)",
+    textColorSuccess: "rgb(76, 173, 80)",
+    textColorError: "rgb(212, 20, 90)",
+    windowBackgroundColor: "rgba(99, 119, 131, 0.75)",
+    windowButtonBackgroundColor: "rgba(2, 20, 30, 0.5)",
+    windowButtonInnerShadow: "inset 0 0 10px rgba(199, 219, 231, 0.75)"
 };

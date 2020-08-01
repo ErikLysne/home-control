@@ -19,10 +19,12 @@ export default class Service {
 
     async start(init) {
         if (!this.started) {
-            this.started = true;
             return new Promise(async (resolve, reject) => {
                 await init()
-                    .then((result) => resolve(result))
+                    .then((result) => {
+                        this.started = true;
+                        return resolve(result);
+                    })
                     .catch((err) => reject(err));
             });
         }

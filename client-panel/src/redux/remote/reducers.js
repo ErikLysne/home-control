@@ -1,6 +1,7 @@
 import * as types from "./types";
 
 const initialState = {
+    online: false,
     activeRequests: 0,
     pending: false,
     loading: false,
@@ -41,7 +42,16 @@ export default (state = initialState, { type, payload }) => {
                 error: payload.error,
                 previousSuccessful: false
             };
-
+        case types.SERVER_PING_SUCCEEDED:
+            return {
+                ...state,
+                online: true
+            };
+        case types.SERVER_PING_FAILED:
+            return {
+                ...state,
+                online: false
+            };
         default:
             return state;
     }

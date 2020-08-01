@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { remoteOperations } from "../../../redux/remote";
+import NetworkStatusWindow from "./NetworkStatusWindow";
 import iconNetwork from "./images/Network.png";
 import iconNoNetwork from "./images/NoNetwork.png";
 import iconLoadingSpinner from "./images/LoadingSpinner.gif";
@@ -21,22 +23,46 @@ const Container = styled.div`
     background-position: center;
 `;
 
-const NetworkStatusWindow = styled.div`
-    width: 50%;
-    heigth: 200px;
-    position: absolute;
-    left: 20px;
-    top: 50px;
-`;
-
 export default function NetworkIndicator() {
+    const [networkStatusWindowActive, setNetworkStatusWindowActive] = useState(
+        false
+    );
+
     const remote = useSelector((state) => state.remote);
-    const { loading, previousSuccessful } = remote;
+    const { pingInterval } = useSelector((state) => state.config);
+    const { online, loading, previousSuccessful } = remote;
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(remoteOperations.serverPingRequested());
+        const timer = setInterval(() => {
+            dispatch(remoteOperations.serverPingRequested());
+        }, pingInterval);
+        return () => {
+            // cleanup
+            clearInterval(timer);
+        };
+    }, []);
+
+    const handleClickEvent = () => {
+        setNetworkStatusWindowActive(!networkStatusWindowActive);
+    };
 
     return (
-        <Container
-            loading={loading ? 1 : undefined}
-            networkStatus={previousSuccessful}
-        />
+        <>
+            <Container
+                loading={loading ? 1 : undefined}
+                networkStatus={previousSuccessful}
+                onClick={handleClickEvent}
+            />
+            {networkStatusWindowActive && (
+                <NetworkStatusWindow
+                    onClose={() => {
+                        setNetworkStatusWindowActive(false);
+                    }}
+                />
+            )}
+        </>
     );
 }

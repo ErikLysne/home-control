@@ -1,7 +1,7 @@
 import axios from "axios";
 import { remoteActions } from "../remote";
 
-export function get(extensions, getState, dispatch, callbackAction) {
+export function get(extensions, getState, dispatch, successAction, failAction) {
     const state = getState();
     const { host, loadingTime } = state.config;
 
@@ -26,15 +26,23 @@ export function get(extensions, getState, dispatch, callbackAction) {
         .then((result) => {
             clearTimeout(timer);
             dispatch(remoteActions.requestSucceeded());
-            dispatch(callbackAction(result.data.data));
+            successAction && dispatch(successAction(result.data.data));
         })
         .catch((err) => {
             clearTimeout(timer);
             dispatch(remoteActions.requestFailed(err.error || err.message));
+            failAction && dispatch(failAction(err.error || err.message));
         });
 }
 
-export function put(extensions, data, getState, dispatch, callbackAction) {
+export function put(
+    extensions,
+    data,
+    getState,
+    dispatch,
+    successAction,
+    failAction
+) {
     const state = getState();
     const { host, loadingTime } = state.config;
 
@@ -63,10 +71,11 @@ export function put(extensions, data, getState, dispatch, callbackAction) {
         .then((result) => {
             clearTimeout(timer);
             dispatch(remoteActions.requestSucceeded());
-            dispatch(callbackAction(result.data.data));
+            successAction && dispatch(successAction(result.data.data));
         })
         .catch((err) => {
             clearTimeout(timer);
             dispatch(remoteActions.requestFailed(err.error || err.message));
+            failAction && dispatch(failAction(err.error || err.message));
         });
 }

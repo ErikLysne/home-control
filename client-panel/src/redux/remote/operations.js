@@ -1,12 +1,15 @@
 import * as actions from "./actions";
-import { get, put } from "../util/requests";
+import { get } from "../util/requests";
 
-// FIX THIS
-export const getLightsRequested = () => {
+export const serverPingRequested = () => {
     return (dispatch, getState) => {
-        const state = getState();
-        const { host } = state.config;
-        const extensions = ["status"];
-        get(host, extensions, dispatch, actions.lightsUpdated);
+        const extensions = ["services"];
+        get(
+            extensions,
+            getState,
+            dispatch,
+            actions.serverPingSucceeded,
+            actions.serverPingFailed
+        );
     };
 };

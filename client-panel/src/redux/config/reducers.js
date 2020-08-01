@@ -7,6 +7,7 @@ const initialState = {
         }
     },
     loadingTime: 500,
+    pingInterval: 10000,
     target: "living-room"
 };
 

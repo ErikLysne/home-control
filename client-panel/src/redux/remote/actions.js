@@ -21,3 +21,13 @@ export const requestFailed = (err) => ({
         error: err
     }
 });
+
+export const serverPingSucceeded = () => ({
+    type: types.SERVER_PING_SUCCEEDED,
+    payload: {}
+});
+
+export const serverPingFailed = () => ({
+    type: types.SERVER_PING_FAILED,
+    payload: {}
+});
