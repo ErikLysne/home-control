@@ -38,6 +38,14 @@ export default class Repository {
         );
     }
 
+    async updateAll(params) {
+        return await performRepositoryAction(
+            this.Model.updateMany.bind(this.Model),
+            {},
+            params
+        );
+    }
+
     async delete(criteria, value) {
         return await performRepositoryAction(
             this.Model.deleteOne.bind(this.Model),
@@ -53,7 +61,6 @@ async function performRepositoryAction(action, ...args) {
                 resolve(result || true);
             })
             .catch((err) => {
-                console.error(err);
                 reject(err);
             });
     });

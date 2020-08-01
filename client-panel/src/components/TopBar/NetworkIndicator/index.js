@@ -21,6 +21,14 @@ const Container = styled.div`
     background-position: center;
 `;
 
+const NetworkStatusWindow = styled.div`
+    width: 50%;
+    heigth: 200px;
+    position: absolute;
+    left: 20px;
+    top: 50px;
+`;
+
 export default function NetworkIndicator() {
     const remote = useSelector((state) => state.remote);
     const { loading, previousSuccessful } = remote;

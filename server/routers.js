@@ -1,6 +1,6 @@
+import serviceRouter from "./service";
 import roomRouter from "./room";
 
-const routers = [];
-routers.push(roomRouter);
+const routers = [serviceRouter, roomRouter];
 
 export default routers;

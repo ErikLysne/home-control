@@ -1,11 +1,10 @@
 import Controller from "../base/controller";
-import LightsService from "./lights/lightsService";
 
 export default class RoomController extends Controller {
     constructor(...args) {
         super(...args);
         this.lightsService = this.services.filter(
-            (service) => service instanceof LightsService
+            (service) => service.type === "lights-service"
         )[0];
     }
 

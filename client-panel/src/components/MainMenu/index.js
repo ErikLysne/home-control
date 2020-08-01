@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import MainMenuButton from "./MainMenuButton";
 import LightIcon from "./LightIcon";
+import RoutinesIcon from "./RoutinesIcon";
 import SettingsIcon from "./SettingsIcon";
 
 const Container = styled.div`
@@ -22,8 +23,7 @@ export default function MainMenu() {
     return (
         <Container theme={theme}>
             <MainMenuButton label={"Light"} Icon={LightIcon} />
-            <MainMenuButton label={"Settings"} Icon={SettingsIcon} />
-            <MainMenuButton label={"Settings"} Icon={SettingsIcon} />
+            <MainMenuButton label={"Routines"} Icon={RoutinesIcon} />
             <MainMenuButton label={"Settings"} Icon={SettingsIcon} />
         </Container>
     );

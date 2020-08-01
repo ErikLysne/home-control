@@ -1,6 +1,11 @@
 export default class Service {
-    constructor() {
+    constructor(type) {
+        this.serviceType = type;
         this.started = false;
+    }
+
+    get type() {
+        return this.serviceType;
     }
 
     started() {

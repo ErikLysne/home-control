@@ -12,17 +12,19 @@ export default class PhilipsHueLightsService extends LightsService {
     }
 
     async start() {
-        return new Promise(async (resolve, reject) => {
-            await this.hue.api
-                .createLocal(this.host)
-                .connect(this.username)
-                .then((user) => {
-                    super.started();
-                    this.user = user;
-                    resolve(true);
-                })
-                .catch((err) => reject(err));
-        });
+        if (!this.started) {
+            return new Promise(async (resolve, reject) => {
+                await this.hue.api
+                    .createLocal(this.host)
+                    .connect(this.username)
+                    .then((user) => {
+                        super.started();
+                        this.user = user;
+                        resolve(true);
+                    })
+                    .catch((err) => reject(err));
+            });
+        }
     }
 
     async getLights(group) {
@@ -71,7 +73,18 @@ export default class PhilipsHueLightsService extends LightsService {
         });
     }
 
+    async getStatus() {
+        super.checkIfStarted();
+        return new Promise(async (resolve, reject) => {
+            await this.user.configuration
+                .getConfiguration()
+                .then((config) => resolve(config.getHuePayload()))
+                .catch((err) => reject(err));
+        });
+    }
+
     async synchronize(room) {
+        super.checkIfStarted();
         const group =
             room.lights !== "undefined" &&
             room.lights.meta !== "undefined" &&
