@@ -2,12 +2,8 @@ import Service from "../../base/service";
 
 export default class LightsService extends Service {
     constructor(Model) {
-        super("lights-service");
+        super("lights-service", "Lights Service");
         this.Model = Model;
-    }
-
-    start() {
-        throw new Error(`Not implemented in derived class`);
     }
 
     getLights() {

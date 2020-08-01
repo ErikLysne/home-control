@@ -12,19 +12,18 @@ export default class PhilipsHueLightsService extends LightsService {
     }
 
     async start() {
-        if (!this.started) {
+        await super.start(() => {
             return new Promise(async (resolve, reject) => {
                 await this.hue.api
                     .createLocal(this.host)
                     .connect(this.username)
                     .then((user) => {
-                        super.started();
                         this.user = user;
                         resolve(true);
                     })
                     .catch((err) => reject(err));
             });
-        }
+        });
     }
 
     async getLights(group) {

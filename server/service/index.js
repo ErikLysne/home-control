@@ -1,21 +1,23 @@
-import ServiceRouter from "./serviceRouter";
-import ServiceController from "./serviceController";
-import ServiceRepository from "./serviceRepository";
+import ServiceStatusRouter from "./serviceStatusRouter";
+import ServiceStatusController from "./serviceStatusController";
+import ServiceStatusRepository from "./serviceStatusRepository";
 import ServiceModel from "./serviceModel";
-import ServiceRequestValidator from "./serviceRequestValidator";
+import ServiceStatusModel from "./serviceStatusModel";
+import ServiceStatusRequestValidator from "./serviceStatusRequestValidator";
 import PhilipsHueLightsService from "../services/lights/providers/philips-hue";
 
 const services = [PhilipsHueLightsService];
 
-const serviceController = new ServiceController(
-    services,
-    ServiceRepository,
+const serviceStatusController = new ServiceStatusController(
     ServiceModel,
-    ServiceRequestValidator
+    services,
+    ServiceStatusRepository,
+    ServiceStatusModel,
+    ServiceStatusRequestValidator
 );
-serviceController.startServices();
+serviceStatusController.startServices();
 
-const serviceRouter = new ServiceRouter(serviceController);
-serviceRouter.registerRoutes();
+const serviceStatusRouter = new ServiceStatusRouter(serviceStatusController);
+serviceStatusRouter.registerRoutes();
 
-export default serviceRouter;
+export default serviceStatusRouter;

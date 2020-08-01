@@ -1,7 +1,18 @@
 import mongoose from "mongoose";
 
 const serviceSchema = new mongoose.Schema({
-    services: [],
+    type: {
+        type: String
+    },
+    displayName: {
+        type: String
+    },
+    status: {
+        type: String
+    },
+    config: {
+        type: mongoose.Schema.Types.Mixed
+    },
     updated: {
         type: Date,
         default: () => {

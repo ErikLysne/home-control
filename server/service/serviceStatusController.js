@@ -1,9 +1,9 @@
 import Controller from "../base/controller";
 
-export default class ServiceController extends Controller {
-    constructor(...args) {
+export default class ServiceStatusController extends Controller {
+    constructor(ServiceModel, ...args) {
         super(...args);
-
+        this.ServiceModel = ServiceModel;
         this.repository.findAll().then((result) => {
             if (result.length === 0) {
                 this.repository.create({ services: [] });
@@ -15,7 +15,12 @@ export default class ServiceController extends Controller {
         const type = "services";
         await this.synchronizeServices();
         const services = await this.repository.findAll();
-        const servicesObj = services[0].toObject();
+        const { _id, __v, ...servicesObj } = services[0].toObject();
+        const servicesParams = servicesObj.services.map((service) => {
+            let { _id, __v, ...params } = service;
+            return params;
+        });
+        servicesObj.services = servicesParams;
         servicesObj.type = type;
         super.resoucesRetrieved(res, servicesObj);
     }
@@ -26,6 +31,7 @@ export default class ServiceController extends Controller {
             this.services.map(async (service) => {
                 const serviceObj = {
                     type: service.type,
+                    displayName: service.displayName,
                     status: "offline",
                     config: {}
                 };
@@ -47,7 +53,10 @@ export default class ServiceController extends Controller {
         servicesParams.updated = new Date(
             Date.now() - timezoneOffset
         ).toISOString();
-        servicesParams.services = services;
+        const serviceModels = services.map(
+            (service) => new this.ServiceModel(service)
+        );
+        servicesParams.services = serviceModels;
         await this.repository.updateAll(servicesParams);
     }
 }

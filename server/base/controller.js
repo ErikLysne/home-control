@@ -10,13 +10,22 @@ export default class Controller {
         return new Promise(async (resolve, reject) => {
             Promise.all(
                 this.services.map((service) =>
-                    service.start().then(() => {
-                        console.log(
-                            `Started service \`${getClassName(
-                                service
-                            )}\` for controller \`${getClassName(this)}\``
-                        );
-                    })
+                    service
+                        .start()
+                        .then(() => {
+                            console.log(
+                                `Started service \`${getClassName(
+                                    service
+                                )}\` for controller \`${getClassName(this)}\``
+                            );
+                        })
+                        .catch(() =>
+                            console.log(
+                                `Failed to start service \`${getClassName(
+                                    service
+                                )}\` for controller \`${getClassName(this)}\``
+                            )
+                        )
                 )
             )
                 .then(() => {
