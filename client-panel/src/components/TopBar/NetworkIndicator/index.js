@@ -30,7 +30,7 @@ export default function NetworkIndicator() {
 
     const remote = useSelector((state) => state.remote);
     const { pingInterval } = useSelector((state) => state.config);
-    const { online, loading, previousSuccessful } = remote;
+    const { loading, previousSuccessful } = remote;
 
     const dispatch = useDispatch();
 

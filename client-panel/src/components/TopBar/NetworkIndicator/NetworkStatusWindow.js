@@ -4,12 +4,14 @@ import styled from "styled-components";
 import { serviceOperations } from "../../../redux/services";
 
 const Window = styled.div`
-    width: 50%;
+    width: 250px;
     height: 200px;
     position: absolute;
     left: 20px;
     top: 50px;
     z-index: 10;
+    backdrop-filter: ${(props) => props.theme.windowBackdropFilter};
+    box-shadow: ${(props) => props.theme.windowInnerShadow};
     color: ${(props) => props.theme.textColorAlternative1};
     background-color: ${(props) => props.theme.windowBackgroundColor};
 `;
@@ -23,7 +25,7 @@ const Status = styled.span`
 
 const Table = styled.table`
     width: 100%;
-    font-size: 0.75rem;
+    padding: 10px;
 `;
 
 const Thead = styled.thead`
@@ -48,6 +50,11 @@ const TdLabel = styled.td`
 
 const TdValue = styled.td`
     text-align: right;
+`;
+
+const TdSpacer = styled.td`
+    text-align: left;
+    color: ${(props) => props.theme.textColor};
 `;
 
 const CloseButton = styled.button`
@@ -112,7 +119,7 @@ export default function NetworkStatusWindow({ onClose }) {
                 {online && (
                     <Tbody>
                         <Tr>
-                            <TdLabel>Services:</TdLabel>
+                            <TdSpacer theme={theme}>Services:</TdSpacer>
                         </Tr>
                         {services.map((service) => (
                             <Tr>

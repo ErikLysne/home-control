@@ -12,7 +12,9 @@ export default {
     textColorAlternative1: "rgb(150, 230, 255)",
     textColorSuccess: "rgb(76, 173, 80)",
     textColorError: "rgb(212, 20, 90)",
-    windowBackgroundColor: "rgba(99, 119, 131, 0.75)",
+    windowBackgroundColor: "rgba(59, 79, 91, 0.80)",
+    windowInnerShadow: "inset 0 0 10px rgba(199, 219, 231, 0.75)",
+    windowBackdropFilter: "blur(2px)",
     windowButtonBackgroundColor: "rgba(2, 20, 30, 0.5)",
     windowButtonInnerShadow: "inset 0 0 10px rgba(199, 219, 231, 0.75)"
 };

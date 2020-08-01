@@ -1,4 +1,4 @@
-import serviceRouter from "./service";
+import serviceRouter from "./serviceStatus";
 import roomRouter from "./room";
 
 const routers = [serviceRouter, roomRouter];
