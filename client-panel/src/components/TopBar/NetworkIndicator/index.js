@@ -43,7 +43,7 @@ export default function NetworkIndicator() {
             // cleanup
             clearInterval(timer);
         };
-    }, []);
+    }, [dispatch, pingInterval]);
 
     const handleClickEvent = () => {
         setNetworkStatusWindowActive(!networkStatusWindowActive);

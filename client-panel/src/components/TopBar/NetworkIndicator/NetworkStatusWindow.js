@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { serviceOperations } from "../../../redux/services";
 
 const Window = styled.div`
@@ -10,10 +10,51 @@ const Window = styled.div`
     left: 20px;
     top: 50px;
     z-index: 10;
+    overflow: hidden;
     backdrop-filter: ${(props) => props.theme.windowBackdropFilter};
     box-shadow: ${(props) => props.theme.windowInnerShadow};
     color: ${(props) => props.theme.textColorAlternative1};
     background-color: ${(props) => props.theme.windowBackgroundColor};
+    animation: ${(props) =>
+        props.transition ? windowOpenAnimation : windowCloseAnimation};
+    animation-duration: ${(props) => props.duration}ms;
+`;
+
+const windowOpenAnimation = () => keyframes`
+    0% {
+        width: 0;
+        height: 2rem;
+        opacity: 0;
+    }
+
+    50% {
+        width: 250px;
+        height: 2rem;
+        opacity: 0.5;
+    }
+    
+    100% {
+        width: 250px;
+        height: 200px;
+        opacity: 1.0;
+    }
+`;
+
+const windowCloseAnimation = () => keyframes`
+    0% {
+        width: 250px;
+        height: 200px;
+    }
+
+    50% {
+        width: 250px;
+        height: 2rem;
+    }
+
+    100% {
+        width: 0;
+        height: 2rem;
+    }
 `;
 
 const Status = styled.span`
@@ -78,6 +119,9 @@ const CloseButton = styled.button`
 `;
 
 export default function NetworkStatusWindow({ onClose }) {
+    const [windowTransition, setWindowTransition] = useState(1);
+    const windowTransitionDuration = 1000;
+
     const { pingInterval } = useSelector((state) => state.config);
     const { online } = useSelector((state) => state.remote);
     const { services } = useSelector((state) => state.services);
@@ -97,11 +141,16 @@ export default function NetworkStatusWindow({ onClose }) {
     }, [dispatch, pingInterval]);
 
     const handleCloseEvent = () => {
-        onClose();
+        setWindowTransition(0);
+        setTimeout(() => onClose(), windowTransitionDuration);
     };
 
     return (
-        <Window theme={theme}>
+        <Window
+            theme={theme}
+            duration={windowTransitionDuration}
+            transition={windowTransition}
+        >
             <Table>
                 <Thead>
                     <Tr>

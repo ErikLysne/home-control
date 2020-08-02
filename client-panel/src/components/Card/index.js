@@ -49,8 +49,8 @@ export default function Card({ header, items }) {
             </Header>
             <Table>
                 <Tbody>
-                    {items.map((item) => (
-                        <Tr>
+                    {items.map((item, index) => (
+                        <Tr key={index}>
                             <TdLabel>{`${item.label}:`}</TdLabel>
                             <TdValue>{item.value}</TdValue>
                         </Tr>

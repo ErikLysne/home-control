@@ -43,7 +43,7 @@ const CardContainer = styled.div`
     align-items: center;
 `;
 
-export default function HomeScreen({}) {
+export default function HomeScreen() {
     const remote = useSelector((store) => store.remote);
     const pending = remote.pending;
 
@@ -58,7 +58,7 @@ export default function HomeScreen({}) {
         return () => {
             //cleanup
         };
-    }, []);
+    }, [dispatch]);
 
     const handleActivationButtonPressed = () => {
         if (!pending) {
