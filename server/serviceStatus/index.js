@@ -5,8 +5,9 @@ import ServiceModel from "./serviceModel";
 import ServiceStatusModel from "./serviceStatusModel";
 import ServiceStatusRequestValidator from "./serviceStatusRequestValidator";
 import PhilipsHueLightsService from "../services/lights/providers/philips-hue";
+import TibberPulsePowerService from "../services/power/providers/tibber-pulse";
 
-const services = [PhilipsHueLightsService];
+const services = [PhilipsHueLightsService, TibberPulsePowerService];
 
 const serviceStatusController = new ServiceStatusController(
     ServiceModel,
@@ -15,6 +16,7 @@ const serviceStatusController = new ServiceStatusController(
     ServiceStatusModel,
     ServiceStatusRequestValidator
 );
+
 serviceStatusController.startServices();
 
 const serviceStatusRouter = new ServiceStatusRouter(serviceStatusController);

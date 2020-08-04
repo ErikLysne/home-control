@@ -7,6 +7,9 @@ const serviceSchema = new mongoose.Schema({
     displayName: {
         type: String
     },
+    provider: {
+        type: String
+    },
     status: {
         type: String
     },

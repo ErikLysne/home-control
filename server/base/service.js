@@ -1,7 +1,8 @@
 export default class Service {
-    constructor(type, displayName) {
+    constructor(type, displayName, provider) {
         this.serviceType = type;
         this.displayName = displayName;
+        this.provider = provider;
         this.started = false;
     }
 
@@ -30,5 +31,11 @@ export default class Service {
         }
     }
 
-    synchronize() {}
+    getStatus() {
+        throw new Error(`Not implemented in derived class`);
+    }
+
+    synchronize() {
+        throw new Error(`Not implemented in derived class`);
+    }
 }

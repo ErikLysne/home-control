@@ -1,8 +1,8 @@
 import Service from "../../base/service";
 
 export default class LightsService extends Service {
-    constructor(Model) {
-        super("lights-service", "Lights Service");
+    constructor(Model, provider) {
+        super("lights-service", "Lights service", provider);
         this.Model = Model;
     }
 

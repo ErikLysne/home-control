@@ -3,7 +3,7 @@ import hueApi from "node-hue-api";
 
 export default class PhilipsHueLightsService extends LightsService {
     constructor(host, username, ...args) {
-        super(...args);
+        super(...args, "Philips Hue");
         this.host = host;
         this.username = username;
         this.hue = hueApi.v3;

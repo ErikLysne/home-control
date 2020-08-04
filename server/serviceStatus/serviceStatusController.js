@@ -32,6 +32,7 @@ export default class ServiceStatusController extends Controller {
                 const serviceObj = {
                     type: service.type,
                     displayName: service.displayName,
+                    provider: service.provider,
                     status: "offline",
                     config: {}
                 };
