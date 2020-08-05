@@ -85,10 +85,10 @@ export default class PhilipsHueLightsService extends LightsService {
     async synchronize(room) {
         super.checkIfStarted();
         const group =
-            room.lights !== "undefined" &&
-            room.lights.meta !== "undefined" &&
+            typeof room.lights !== "undefined" &&
+            typeof room.lights.meta !== "undefined" &&
             room.lights.meta.group;
-        if (typeof group !== "undefined") {
+        if (group) {
             const lights = await this.getLights(room.lights.meta.group);
             const { _id, ...lightParams } = lights;
             room.lights.resource = lightParams;

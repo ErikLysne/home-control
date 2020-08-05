@@ -8,5 +8,8 @@
         "host": "localhost",
         "port": 27017,
         "collection": "home-control"
+    },
+    "development": {
+        "enableRequestErrorLogging": true
     }
 }

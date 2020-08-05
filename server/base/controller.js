@@ -1,9 +1,14 @@
+import ResponseHandler from "./responseHandler";
+import config from "config";
+import chalk from "chalk";
+
 export default class Controller {
     constructor(services, Repository, Model, RequestValidator) {
+        this.type = null;
         this.services = services;
         this.repository = new Repository(Model);
         this.requestValidator = new RequestValidator();
-        this.type = null;
+        this.responseHandler = new ResponseHandler();
     }
 
     async startServices() {
@@ -43,68 +48,133 @@ export default class Controller {
                 try {
                     await this[callback](req, res);
                 } catch (err) {
-                    this.internalServerError(res, err);
+                    if (config.get("development.enableRequestErrorLogging")) {
+                        console.log(chalk.red("Request error"));
+                        console.error(err);
+                    }
+                    this.responseHandler.internalServerError(res, err);
                 }
             }
         };
     }
 
-    internalServerError(res, err) {
-        const status = err.statusCode || err.status;
-        const statusCode = status || 500;
-        res.status(statusCode).send({ error: err.message });
+    async getResources(type, req, res) {
+        let resources = await this.repository.findAll();
+        let synchronizedResources = [];
+        for await (const resource of resources) {
+            const resourceObj = resource.toObject();
+            resourceObj.type = type;
+            synchronizedResources.push(
+                await this.synchronizeServices(resourceObj)
+            );
+        }
+        this.responseHandler.resoucesRetrieved(res, synchronizedResources);
     }
 
-    requestProcessingError(res, err) {
-        res.status(400).send({
-            error: err
-        });
+    async postResource(type, req, res) {
+        if (!this.requestValidator.validateType(req, type)) {
+            return;
+        }
+
+        const { data } = req.body;
+        const resource = await this.repository.create(data);
+        const resourceObj = resource.toObject();
+        const result = await this.synchronizeServices(resourceObj);
+        result.type = type;
+        this.responseHandler.resourceCreated(res, result);
     }
 
-    resourceNotFoundError(res, param) {
-        res.status(404).send({
-            error: `Did not find resource with parameter \`${param}\``
-        });
+    async deleteResources(type, req, res) {
+        if (!this.requestValidator.validateType(req, type)) {
+            return;
+        }
+
+        let resources = await this.repository.findAll();
+        let synchronizedResources = [];
+        for await (const resource of resources) {
+            const resourceObj = resource.toObject();
+            const result = await this.synchronizeServices(resourceObj);
+            result.type = type;
+            synchronizedResources.push(result);
+        }
+        await this.repository.deleteAll();
+        this.responseHandler.resourcesDeleted(res, synchronizedResources);
     }
 
-    resoucesRetrieved(res, data) {
-        res.status(200).send({
-            data: data
-        });
+    async getResource(type, criteria, req, res) {
+        const resourceId = req.params[criteria];
+        console.log(req.params);
+        const resources = await this.repository.find(criteria, resourceId);
+        if (resources.length > 0) {
+            const resourceObj = resources[0].toObject();
+            const result = await this.synchronizeServices(resourceObj);
+            result.type = type;
+            this.responseHandler.resouceRetrieved(res, result);
+        } else {
+            this.responseHandler.resourceNotFoundError(res, resourceId);
+        }
     }
 
-    resourcesDeleted(res, data) {
-        res.status(200).send({
-            data: data
-        });
+    async updateResource(type, criteria, req, res) {
+        if (!this.requestValidator.validateType(req, type)) {
+            return;
+        }
+
+        const resourceId = req.params[criteria];
+        const { body } = req;
+        const resources = await this.repository.find(criteria, resourceId);
+        if (resources.length > 0) {
+            const resourceObj = resources[0].toObject();
+            const updatedResource = { ...resourceObj, ...body.data };
+            await this.repository.update(criteria, resourceId, updatedResource);
+            const result = await this.synchronizeServices(updatedResource);
+            result.type = type;
+            this.responseHandler.resourceUpdated(res, result);
+        } else {
+            this.responseHandler.resourceNotFoundError(res, resourceId);
+        }
     }
 
-    resourceCreated(res, data) {
-        res.status(201).send({
-            data: data
-        });
+    async deleteResource(type, criteria, req, res) {
+        if (!this.requestValidator.validateType(req, type)) {
+            return;
+        }
+
+        const resourceId = req.params[criteria];
+        const resources = await this.repository.find(criteria, resourceId);
+        if (resources.length > 0) {
+            const resourceObj = resources[0].toObject();
+            const result = await this.synchronizeServices(resourceObj);
+            result.type = type;
+            await this.repository.delete(criteria, resourceId);
+            this.responseHandler.resourceDeleted(res, result);
+        } else {
+            this.responseHandler.resourceNotFoundError(res, resourceId);
+        }
     }
 
-    resouceRetrieved(res, data) {
-        res.status(200).send({
-            data: data
-        });
+    async synchronizeServices(resource, criteria) {
+        let { _id, __v, updated, ...params } = resource;
+        for await (const service of this.services) {
+            await service.synchronize(params);
+        }
+
+        const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+        params.updated = new Date(Date.now() - timezoneOffset).toISOString();
+        await this.repository.update(criteria, resource[criteria], params);
+
+        return params;
     }
 
-    resourceUpdated(res, data) {
-        res.status(200).send({
-            data: data
-        });
-    }
+    async synchronizeService(resource, criteria, service) {
+        let { _id, __v, updated, ...params } = resource;
+        await service.synchronize(params);
 
-    resourceDeleted(res, data) {
-        res.status(200).send({
-            data: data
-        });
-    }
+        const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+        params.updated = new Date(Date.now() - timezoneOffset).toISOString();
+        await this.repository.update(criteria, resource[criteria], params);
 
-    success(res, data) {
-        res.status(200).send({ data: data });
+        return params;
     }
 }
 

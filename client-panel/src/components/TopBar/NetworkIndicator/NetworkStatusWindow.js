@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import { serviceOperations } from "../../../redux/services";
 
 const Window = styled.div`
-    width: 250px;
+    width: 300px;
     height: 200px;
     position: absolute;
     left: 20px;
@@ -28,13 +28,13 @@ const windowOpenAnimation = () => keyframes`
     }
 
     50% {
-        width: 250px;
+        width: 300px;
         height: 2rem;
         opacity: 0.5;
     }
     
     100% {
-        width: 250px;
+        width: 300px;
         height: 200px;
         opacity: 1.0;
     }
@@ -42,12 +42,12 @@ const windowOpenAnimation = () => keyframes`
 
 const windowCloseAnimation = () => keyframes`
     0% {
-        width: 250px;
+        width: 300px;
         height: 200px;
     }
 
     50% {
-        width: 250px;
+        width: 300px;
         height: 2rem;
     }
 
@@ -95,6 +95,10 @@ const TdValue = styled.td`
 
 const TdSpacer = styled.td`
     text-align: left;
+    color: ${(props) => props.theme.textColor};
+`;
+
+const TextSpan = styled.span`
     color: ${(props) => props.theme.textColor};
 `;
 
@@ -172,7 +176,12 @@ export default function NetworkStatusWindow({ onClose }) {
                         </Tr>
                         {services.map((service) => (
                             <Tr>
-                                <TdLabel>{`${service.displayName}:`}</TdLabel>
+                                <TdLabel>
+                                    {service.displayName}{" "}
+                                    <TextSpan
+                                        theme={theme}
+                                    >{`(${service.provider}):`}</TextSpan>
+                                </TdLabel>
                                 <TdValue>
                                     <Status
                                         status={
