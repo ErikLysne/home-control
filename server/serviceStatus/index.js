@@ -17,8 +17,6 @@ const serviceStatusController = new ServiceStatusController(
     ServiceStatusRequestValidator
 );
 
-serviceStatusController.startServices();
-
 const serviceStatusRouter = new ServiceStatusRouter(serviceStatusController);
 serviceStatusRouter.registerRoutes();
 

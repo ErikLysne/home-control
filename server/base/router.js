@@ -4,7 +4,11 @@ export default class Router {
         this.registeredRoutes = [];
     }
 
-    registerRoutes() {
+    async startController() {
+        await this.controller.startServices();
+    }
+
+    async registerRoutes() {
         throw new Error(`Not implemented in derived class`);
     }
 

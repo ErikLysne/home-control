@@ -77,7 +77,13 @@ export default class PhilipsHueLightsService extends LightsService {
         return new Promise(async (resolve, reject) => {
             await this.user.configuration
                 .getConfiguration()
-                .then((config) => resolve(config.getHuePayload()))
+                .then((config) => {
+                    const {
+                        whitelist,
+                        ...configParams
+                    } = config.getHuePayload();
+                    resolve(configParams);
+                })
                 .catch((err) => reject(err));
         });
     }

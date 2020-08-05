@@ -1,7 +1,7 @@
 import Router from "../base/router";
 
 export default class RoomRouter extends Router {
-    registerRoutes() {
+    async registerRoutes() {
         const { registerCallback } = this.controller;
         const registerRoute = super.registerRoute.bind(this);
 

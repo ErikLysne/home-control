@@ -19,16 +19,24 @@ export default class Controller {
                         .start()
                         .then(() => {
                             console.log(
-                                `Started service \`${getClassName(
-                                    service
-                                )}\` for controller \`${getClassName(this)}\``
+                                chalk.green(
+                                    `Started service \`${getClassName(
+                                        service
+                                    )}\` for controller \`${getClassName(
+                                        this
+                                    )}\``
+                                )
                             );
                         })
                         .catch(() =>
                             console.log(
-                                `Failed to start service \`${getClassName(
-                                    service
-                                )}\` for controller \`${getClassName(this)}\``
+                                chalk.red(
+                                    `Failed to start service \`${getClassName(
+                                        service
+                                    )}\` for controller \`${getClassName(
+                                        this
+                                    )}\``
+                                )
                             )
                         )
                 )
@@ -103,7 +111,6 @@ export default class Controller {
 
     async getResource(type, criteria, req, res) {
         const resourceId = req.params[criteria];
-        console.log(req.params);
         const resources = await this.repository.find(criteria, resourceId);
         if (resources.length > 0) {
             const resourceObj = resources[0].toObject();

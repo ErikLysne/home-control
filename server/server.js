@@ -2,12 +2,16 @@ import ExpressApp from "./expressApp";
 import routers from "./routers";
 import connectToDb from "./connectToDb";
 
-connectToDb();
+async function start() {
+    await connectToDb();
 
-const app = new ExpressApp();
+    const app = new ExpressApp();
 
-routers.forEach((router) => {
-    app.registerRouter(router);
-});
+    routers.forEach((router) => {
+        app.registerRouter(router);
+    });
 
-app.run();
+    app.run();
+}
+
+start();

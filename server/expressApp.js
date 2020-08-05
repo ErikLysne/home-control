@@ -25,7 +25,7 @@ export default class ExpressApp {
         this.routers.push(router);
     }
 
-    run() {
+    async run() {
         // Add all registered routes
         const expressRouter = express.Router();
         this.routers.forEach((router) => {
@@ -45,6 +45,11 @@ export default class ExpressApp {
                 error: `Method ${req.method} not defined for route ${req.originalUrl}`
             });
         });
+
+        // Start controllers
+        for await (const router of this.routers) {
+            await router.startController();
+        }
 
         // Start server
         this.express.listen(this.port, this.host);

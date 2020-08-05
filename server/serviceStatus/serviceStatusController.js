@@ -22,7 +22,7 @@ export default class ServiceStatusController extends Controller {
         });
         servicesObj.services = servicesParams;
         servicesObj.type = type;
-        super.resoucesRetrieved(res, servicesObj);
+        this.responseHandler.resoucesRetrieved(res, servicesObj);
     }
 
     async synchronizeServices() {

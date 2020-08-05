@@ -54,4 +54,12 @@ export default class TibberPulsePowerService extends PowerService {
             this.isConnected ? resolve({}) : reject(this.lastError)
         );
     }
+
+    async synchronize(home) {
+        super.checkIfStarted();
+        if (typeof home.power !== "undefined") {
+            const power = this.getPower();
+            home.power.resource = power;
+        }
+    }
 }

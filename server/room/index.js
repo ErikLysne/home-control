@@ -13,7 +13,6 @@ const roomController = new RoomController(
     RoomModel,
     RoomRequestValidator
 );
-roomController.startServices();
 
 const roomRouter = new RoomRouter(roomController);
 roomRouter.registerRoutes();
