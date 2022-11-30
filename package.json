@@ -2,10 +2,16 @@
 	"name": "home-control",
 	"version": "0.0.0",
 	"private": true,
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
+	"workspaces": {
+		"packages": [
+			"apps/*",
+			"packages/*",
+			"microservices/*"
+		],
+		"nohoist": [
+			"@nestjs/core"
+		]
+	},
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "turbo run dev --parallel",
