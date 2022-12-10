@@ -1,0 +1,38 @@
+FROM node:18-slim AS builder
+WORKDIR /app
+
+RUN yarn global add turbo
+COPY . .
+RUN turbo prune --scope=@homecontrol/home --docker
+
+FROM node:18-slim AS installer
+RUN apt-get update
+RUN apt-get install -y openssl
+WORKDIR /app
+
+# Install dependencies
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/yarn.lock ./yarn.lock
+RUN yarn install
+
+# Build project
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+
+# Generate prisma bindings
+RUN cd /app/microservices/home && yarn prisma generate
+
+# Build microservice
+RUN yarn turbo run build --filter=home...
+
+FROM node:18-slim AS runner
+RUN apt-get update
+RUN apt-get install -y openssl
+RUN yarn global add @nestjs/cli
+WORKDIR /app
+
+COPY --from=installer /app .
+
+WORKDIR /app/microservices/home/dist 
+CMD ["node", "main"]
