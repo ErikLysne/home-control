@@ -1,0 +1,27 @@
+{
+	"name": "@homecontrol/nest-common",
+	"version": "0.0.0",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"author": "Erik Lysne",
+	"license": "UNLISENCED",
+	"private": true,
+	"scripts": {
+		"build": "rimraf dist && tsc"
+	},
+	"dependencies": {
+		"@nestjs/common": "^9.2.1",
+		"@prisma/client": "^4.7.0",
+		"class-transformer": "^0.5.1",
+		"class-validator": "^0.13.2",
+		"reflect-metadata": "^0.1.13",
+		"rxjs": "^7.5.7"
+	},
+	"devDependencies": {
+		"@nestjs/testing": "^9.2.1",
+		"@types/node": "^18.11.10",
+		"rimraf": "^3.0.2",
+		"tsconfig": "*",
+		"typescript": "^4.9.3"
+	}
+}
