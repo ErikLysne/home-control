@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home
+  template:
+    metadata:
+      labels:
+        app: home
+    spec:
+      containers:
+        - name: home
+          image: eriklysne/home
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-clusterip-service
+spec:
+  selector:
+    app: home
+  type: ClusterIP
+  ports:
+    - name: home
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
